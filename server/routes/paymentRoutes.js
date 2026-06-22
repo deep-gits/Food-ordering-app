@@ -11,14 +11,14 @@ router.post('/create-intent', protect, async (req, res) => {
 
     // SIMULATED: In production, use real Stripe:
     // const stripe = require('../config/stripe');
-    // const paymentIntent = await stripe.paymentIntents.create({ amount, currency: 'usd' });
+    // const paymentIntent = await stripe.paymentIntents.create({ amount, currency: 'inr' });
     // res.json({ clientSecret: paymentIntent.client_secret });
 
     // Simulated response
     res.json({
       clientSecret: `pi_simulated_${Date.now()}_secret_${Math.random().toString(36).substring(7)}`,
       amount,
-      currency: 'usd',
+      currency: 'inr',
     });
   } catch (error) {
     res.status(500).json({ message: error.message });

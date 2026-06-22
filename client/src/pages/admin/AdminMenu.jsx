@@ -183,7 +183,7 @@ const AdminMenu = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="label">Price (₹)</label>
-                      <input type="number" step="0.01" className="input" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} placeholder="12.99" />
+                      <input type="number" step="0.01" className="input" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} placeholder="199" />
                     </div>
                     <div>
                       <label className="label">Category</label>
