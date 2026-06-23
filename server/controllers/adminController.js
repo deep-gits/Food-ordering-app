@@ -22,8 +22,8 @@ const adminGetMenuItems = async (req, res) => {
 // @access  Admin
 const createMenuItem = async (req, res) => {
   try {
-    const { name, description, price, category, isAvailable, isFeatured, preparationTime, tags } = req.body;
-    const image = req.file ? `/uploads/${req.file.filename}` : '';
+    const { name, description, price, category, isAvailable, isFeatured, preparationTime, tags, imageUrl } = req.body;
+    const image = req.file ? `/uploads/${req.file.filename}` : (imageUrl || '');
 
     const item = await MenuItem.create({
       name,
@@ -52,7 +52,7 @@ const updateMenuItem = async (req, res) => {
     const item = await MenuItem.findById(req.params.id);
     if (!item) return res.status(404).json({ message: 'Menu item not found' });
 
-    const { name, description, price, category, isAvailable, isFeatured, preparationTime, tags } = req.body;
+    const { name, description, price, category, isAvailable, isFeatured, preparationTime, tags, imageUrl } = req.body;
 
     item.name = name || item.name;
     item.description = description || item.description;
@@ -63,6 +63,7 @@ const updateMenuItem = async (req, res) => {
     item.preparationTime = preparationTime || item.preparationTime;
     item.tags = tags ? tags.split(',').map((t) => t.trim()) : item.tags;
     if (req.file) item.image = `/uploads/${req.file.filename}`;
+    else if (imageUrl) item.image = imageUrl;
 
     const updated = await item.save();
     await updated.populate('category', 'name icon');

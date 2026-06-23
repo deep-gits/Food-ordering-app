@@ -8,7 +8,7 @@ import Loader from '../../components/common/Loader';
 
 const PLACEHOLDER = 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=80&q=60';
 
-const emptyForm = { name: '', description: '', price: '', category: '', isAvailable: true, isFeatured: false, preparationTime: 20, tags: '' };
+const emptyForm = { name: '', description: '', price: '', category: '', isAvailable: true, isFeatured: false, preparationTime: 20, tags: '', imageUrl: '' };
 
 const AdminMenu = () => {
   const [items,      setItems]      = useState([]);
@@ -37,6 +37,7 @@ const AdminMenu = () => {
       category: item.category?._id || item.category,
       isAvailable: item.isAvailable, isFeatured: item.isFeatured,
       preparationTime: item.preparationTime, tags: item.tags?.join(', ') || '',
+      imageUrl: item.image?.startsWith('http') ? item.image : '',
     });
     setImageFile(null); setShowModal(true);
   };
@@ -218,11 +219,38 @@ const AdminMenu = () => {
                   {/* Image */}
                   <div>
                     <label className="label">Image</label>
-                    <label className="flex items-center gap-3 p-4 rounded-xl border border-dashed border-surface-border hover:border-brand-500/50 cursor-pointer transition-all">
-                      <Image size={20} className="text-gray-500" />
-                      <span className="text-gray-500 text-sm">{imageFile ? imageFile.name : 'Click to upload image'}</span>
+
+                    {/* URL input */}
+                    <div className="mb-2">
+                      <input
+                        className="input"
+                        value={form.imageUrl}
+                        onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+                        placeholder="Paste image URL (e.g. https://images.unsplash.com/...)"
+                      />
+                    </div>
+
+                    {/* Preview */}
+                    {(form.imageUrl || imageFile) && (
+                      <div className="mb-2">
+                        <img
+                          src={imageFile ? URL.createObjectURL(imageFile) : form.imageUrl}
+                          alt="preview"
+                          className="w-full h-36 object-cover rounded-xl border border-surface-border"
+                          onError={(e) => { e.target.style.display = 'none'; }}
+                        />
+                      </div>
+                    )}
+
+                    {/* OR file upload */}
+                    <label className="flex items-center gap-3 p-3 rounded-xl border border-dashed border-surface-border hover:border-brand-500/50 cursor-pointer transition-all">
+                      <Image size={18} className="text-gray-500 flex-shrink-0" />
+                      <span className="text-gray-500 text-xs">
+                        {imageFile ? `📎 ${imageFile.name}` : 'Or click to upload a file (overrides URL)'}
+                      </span>
                       <input type="file" accept="image/*" className="hidden" onChange={(e) => setImageFile(e.target.files[0])} />
                     </label>
+                    <p className="text-gray-600 text-xs mt-1">💡 Use an image URL for best results on the live site</p>
                   </div>
                 </div>
                 <div className="flex gap-3 p-6 border-t border-surface-border">
