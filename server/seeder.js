@@ -38,9 +38,9 @@ const seedDB = async () => {
 
     // Create users
     const adminUser = await User.create({
-      name: 'Admin User',
-      email: 'admin@foodapp.com',
-      password: 'admin123',
+      name: 'Deepak Saraswat',
+      email: 'deepaksaraswat8913@gmail.com',
+      password: 'Deep@8913',
       role: 'admin',
     });
 
@@ -83,7 +83,7 @@ const seedDB = async () => {
 
     console.log('\n✅ Database seeded successfully!');
     console.log('─────────────────────────────────');
-    console.log('Admin: admin@foodapp.com / admin123');
+    console.log('Admin: deepaksaraswat8913@gmail.com / Deep@8913');
     console.log('User:  john@example.com  / password123');
     console.log('─────────────────────────────────');
     process.exit(0);

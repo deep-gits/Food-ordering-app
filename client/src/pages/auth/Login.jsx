@@ -105,13 +105,6 @@ const Login = () => {
 
           <div className="divider" />
 
-          {/* Demo credentials */}
-          <div className="rounded-xl bg-surface-elevated border border-surface-border p-4 text-xs text-gray-500 space-y-1">
-            <p className="font-medium text-gray-400 mb-2">Demo credentials:</p>
-            <p>👤 User: <span className="text-brand-400">john@example.com</span> / password123</p>
-            <p>🔑 Admin: <span className="text-brand-400">admin@foodapp.com</span> / admin123</p>
-          </div>
-
           <p className="text-center text-gray-500 text-sm mt-5">
             Don't have an account?{' '}
             <Link to="/register" className="text-brand-400 hover:text-brand-300 font-medium transition-colors">
