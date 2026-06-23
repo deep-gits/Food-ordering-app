@@ -146,7 +146,14 @@ const getDashboardStats = async (req, res) => {
     const totalMenuItems = await MenuItem.countDocuments();
 
     const revenueResult = await Order.aggregate([
-      { $match: { paymentStatus: 'paid' } },
+      {
+        $match: {
+          $or: [
+            { paymentStatus: 'paid' },                                               // Stripe paid orders
+            { paymentMethod: 'cash_on_delivery', orderStatus: 'delivered' },         // COD delivered orders
+          ],
+        },
+      },
       { $group: { _id: null, total: { $sum: '$totalPrice' } } },
     ]);
     const totalRevenue = revenueResult.length > 0 ? revenueResult[0].total : 0;
