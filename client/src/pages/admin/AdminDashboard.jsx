@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import { ShoppingBag, Users, UtensilsCrossed, DollarSign, TrendingUp, Eye } from 'lucide-react';
+import { ShoppingBag, Users, UtensilsCrossed, IndianRupee, TrendingUp, Eye } from 'lucide-react';
 import { getDashboardStats } from '../../services/adminService';
 import { useState } from 'react';
 import { format } from 'date-fns';
@@ -31,7 +31,7 @@ const AdminDashboard = () => {
   if (loading) return <Loader text="Loading dashboard..." />;
 
   const cards = [
-    { label: 'Total Revenue',   value: `₹${stats?.totalRevenue?.toFixed(2) || '0.00'}`, Icon: DollarSign, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
+    { label: 'Total Revenue',   value: `₹${stats?.totalRevenue?.toFixed(2) || '0.00'}`, Icon: IndianRupee, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
     { label: 'Total Orders',    value: stats?.totalOrders    || 0,                       Icon: ShoppingBag, color: 'text-brand-400',   bg: 'bg-brand-500/10  border-brand-500/20'   },
     { label: 'Menu Items',      value: stats?.totalMenuItems || 0,                       Icon: UtensilsCrossed, color: 'text-purple-400', bg: 'bg-purple-500/10 border-purple-500/20' },
     { label: 'Customers',       value: stats?.totalUsers     || 0,                       Icon: Users,      color: 'text-blue-400',    bg: 'bg-blue-500/10   border-blue-500/20'   },
