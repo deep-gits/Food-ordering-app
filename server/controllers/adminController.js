@@ -124,7 +124,9 @@ const updateOrderStatus = async (req, res) => {
     const order = await Order.findById(req.params.id);
     if (!order) return res.status(404).json({ message: 'Order not found' });
 
-    order.orderStatus = req.body.orderStatus || order.orderStatus;
+    if (req.body.orderStatus)   order.orderStatus   = req.body.orderStatus;
+    if (req.body.paymentStatus) order.paymentStatus = req.body.paymentStatus;
+
     if (req.body.orderStatus === 'delivered') {
       order.deliveredAt = Date.now();
     }

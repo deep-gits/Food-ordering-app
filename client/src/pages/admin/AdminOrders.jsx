@@ -41,6 +41,17 @@ const AdminOrders = () => {
     } finally { setUpdating(null); }
   };
 
+  const handlePaymentStatusChange = async (orderId, newPaymentStatus) => {
+    setUpdating(orderId + '_pay');
+    try {
+      const updated = await adminUpdateOrder(orderId, { paymentStatus: newPaymentStatus });
+      setOrders((prev) => prev.map((o) => o._id === orderId ? { ...o, paymentStatus: updated.paymentStatus } : o));
+      toast.success(`Payment marked as "${newPaymentStatus}"!`);
+    } catch {
+      toast.error('Payment update failed.');
+    } finally { setUpdating(null); }
+  };
+
   const toggleExpand = (id) => setExpanded((prev) => (prev === id ? null : id));
 
   if (loading) return <Loader text="Loading orders..." />;
@@ -113,8 +124,10 @@ const AdminOrders = () => {
                         </td>
                         <td className="px-6 py-4">
                           {order.paymentStatus === 'paid'
-                            ? <span className="badge-green">Paid</span>
-                            : <span className="badge-orange">Pending</span>
+                            ? <span className="badge-green">✅ Paid</span>
+                            : order.paymentStatus === 'failed'
+                            ? <span className="badge-red">❌ Failed</span>
+                            : <span className="badge-orange">⏳ Pending</span>
                           }
                         </td>
                         <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
@@ -220,11 +233,19 @@ const AdminOrders = () => {
                                             {order.paymentMethod === 'cash_on_delivery' ? '💵 Cash on Delivery' : '💳 Stripe'}
                                           </span>
                                         </div>
-                                        <div className="flex justify-between">
+                                        <div className="flex items-center justify-between">
                                           <span className="text-gray-500">Status</span>
-                                          {order.paymentStatus === 'paid'
-                                            ? <span className="badge-green">Paid</span>
-                                            : <span className="badge-orange">Pending</span>}
+                                          <select
+                                            value={order.paymentStatus}
+                                            onChange={(e) => handlePaymentStatusChange(order._id, e.target.value)}
+                                            disabled={updating === order._id + '_pay'}
+                                            onClick={(e) => e.stopPropagation()}
+                                            className="bg-surface-elevated border border-surface-border text-white text-xs rounded-lg px-2 py-1 focus:outline-none focus:border-brand-500 cursor-pointer disabled:opacity-50"
+                                          >
+                                            <option value="pending">⏳ Pending</option>
+                                            <option value="paid">✅ Paid</option>
+                                            <option value="failed">❌ Failed</option>
+                                          </select>
                                         </div>
                                         {order.notes && (
                                           <div className="pt-1 border-t border-surface-border">
